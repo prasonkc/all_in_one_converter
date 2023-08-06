@@ -1,4 +1,3 @@
-import logging
 from moviepy.editor import VideoFileClip
 from moviepy.editor import *
 import os
@@ -48,18 +47,18 @@ def convert_video(input_file, output_file, output_format):
 
         video.write_videofile(output_file, codec=video_codec, audio_codec=audio_codec, preset='ultrafast')
     except ValueError as ve:
-        logging.error(f"ValueError during conversion: {ve}")
+        print(f"ValueError during conversion: {ve}")
         return False
     except FileNotFoundError as fnfe:
-        logging.error(f"FileNotFoundError during conversion: {fnfe}")
+        print(f"FileNotFoundError during conversion: {fnfe}")
         return False
     except Exception as e:
-        logging.error(f"Error during conversion: {e}")
+        print(f"Error during conversion: {e}")
         return False
     finally:
         video.close()
 
-    logging.info("Conversion completed!")
+    print("Conversion completed!")
     return True
 
 if __name__ == "__main__":
