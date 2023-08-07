@@ -26,7 +26,7 @@ def convert_audio(input_file, output_file, output_format, bitrate='192k'):
     if not isinstance(output_format, str):
         raise TypeError('output_format must be a string')
     if not isinstance(bitrate, str):
-        raise TypeError('bitrate must be a string')
+        raise TypeError('Bitrate must be a string')
 
     if not os.path.isfile(input_file):
         raise FileNotFoundError('Input file does not exist.')
