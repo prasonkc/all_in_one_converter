@@ -1,6 +1,7 @@
 from pytube import YouTube
 import os
 
+
 # Function to dynamically show available video resolutions for a given video URL
 def show_available_resolutions(url):
     try:
@@ -28,7 +29,8 @@ def download_single_video(url):
         return
 
     if resolution == "1080p":
-        confirm = input("Audio cannot be guaranteed to preserve in 1080p. Please use 720p to ensure both audio and video are preserved. Do you still wish to continue? (y/n): ").strip().lower()
+        confirm = input(
+            "Audio cannot be guaranteed to preserve in 1080p. Please use 720p to ensure both audio and video are preserved. Do you still wish to continue? (y/n): ").strip().lower()
         if confirm != "y":
             print("Download cancelled.")
             return
