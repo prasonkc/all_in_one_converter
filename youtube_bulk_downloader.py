@@ -1,6 +1,7 @@
 from pytube import YouTube
 import os
 
+
 # audio might not work with 1080p. Use 720p to preserve both video and audio
 def show_available_resolutions(video_url):
     try:
@@ -44,7 +45,6 @@ def download_video(video_url, resolution, output_path):
 
 
 def bulk_download():
-
     urls = []
     while True:
         url = input("Enter YouTube video URL (or 'download' to start download): ").strip()
@@ -60,7 +60,10 @@ def bulk_download():
     if not output_path:
         output_path = os.getcwd()
 
+    print("To Ensure both audio and video works properly and there are no errors, it is recommended "
+          "to download 720p in mp4 format (mp4 automatically selected)")
     selected_resolution = input("Enter desired video resolution for bulk download: ").strip()
+
     for url in urls:
         download_video(url, selected_resolution, output_path)
 

@@ -2,4 +2,3 @@ moviepy
 pydub
 pillow
 pytube
-instaloader
