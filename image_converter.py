@@ -2,6 +2,7 @@ from typing import Union
 from PIL import Image
 import os
 
+
 def convert_image(input_file: str, output_file: str, output_format: str) -> Union[str, None]:
     try:
         img = Image.open(input_file)
@@ -19,6 +20,7 @@ def convert_image(input_file: str, output_file: str, output_format: str) -> Unio
         print(f"Error: {e}")
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     input_file = input("Enter the path of the input image: ")

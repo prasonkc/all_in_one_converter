@@ -1,59 +1,62 @@
-from pytube import YouTube
 import os
+from pytube import YouTube
+from pydub import AudioSegment
 
 
-def download_audio(url, audio_format):
+def download_audio(video_url, output_path, audio_format='mp3', bitrate='192k'):
     try:
-        yt = YouTube(url)
+        yt = YouTube(video_url)
+        audio_streams = yt.streams.filter(only_audio=True)
 
-        if yt.age_restricted:
-            print("Sorry, we do not support age-restricted video downloads.")
+        if not audio_streams:
+            print(f"No audio streams available for '{yt.title}'.")
             return
 
-        audio_stream = yt.streams.filter(only_audio=True, file_extension=audio_format).first()
-        if not audio_stream:
-            print(f"No audio available in {audio_format.upper()} format for '{yt.title}'.")
-            return
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
 
-        output_path = input("Enter the output directory path (leave blank for current directory): ").strip()
-        if not output_path:
-            output_path = os.getcwd()
+        print(f"Downloading audio from '{yt.title}'...")
+        audio_stream = audio_streams.first()
+        audio_file_path = os.path.join(output_path, f"{yt.title}.{audio_format}")
+        audio_stream.download(output_path=output_path, filename=f"{yt.title}.{audio_format}")
 
-        print(f"Downloading audio from '{yt.title}' in the best available quality...")
-        audio_stream.download(output_path=output_path)
-        downloaded_file_path = os.path.join(output_path, audio_stream.default_filename)
+        # Convert to desired audio format and bitrate using pydub
+        audio = AudioSegment.from_file(audio_file_path)
+        audio.export(audio_file_path, format=audio_format, bitrate=bitrate)
 
-        print("Audio download complete.")
-
-        convert_audio_bitrate(downloaded_file_path, audio_format)
-
+        print(f"Download and conversion of '{yt.title}' complete.")
     except Exception as e:
-        print(f"An error occurred while downloading audio from '{url}': {e}")
+        print(f"An error occurred while downloading audio: {e}")
 
 
-def convert_audio_bitrate(input_file, audio_format):
-    try:
-        desired_bitrate = input("Enter desired audio bitrate (e.g., 64k, 128k, 192k, 256k, 320k): ").strip().lower()
-        if not desired_bitrate:
-            print("No bitrate entered. Audio will not be converted.")
-            return
+def main():
+    video_urls = []
+    while True:
+        url = input("Enter YouTube video URL (or 'download' to start download): ").strip()
+        if url.lower() == 'download':
+            break
+        video_urls.append(url)
 
-        output_file_path = os.path.splitext(input_file)[0] + f"_{desired_bitrate}.{audio_format}"
-        command = f"ffmpeg -i {input_file} -b:a {desired_bitrate} {output_file_path}"
+    if not video_urls:
+        print("No video URLs provided.")
+        return
 
-        os.system(command)
+    output_path = input("Enter the output directory path (leave blank for current directory): ").strip()
+    if not output_path:
+        output_path = os.getcwd()
 
-        print(f"Audio bitrate conversion complete. Saved as: {output_file_path}")
+    audio_format = input("Enter desired audio format (e.g., mp3, m4a): ").strip().lower()
+    if not audio_format:
+        audio_format = 'mp3'
 
-    except Exception as e:
-        print(f"An error occurred while converting audio: {e}")
+    bitrate = input("Enter desired bitrate (e.g., 192k): ").strip().lower()
+    if not bitrate:
+        bitrate = '192k'
+
+    for url in video_urls:
+        download_audio(url, output_path, audio_format, bitrate)
 
 
 if __name__ == "__main__":
-    video_url = input("Enter YouTube video URL: ").strip()
-    audio_format = input("Enter desired audio format (e.g., mp3, m4a, webm): ").strip().lower()
+    main()
 
-    if not audio_format:
-        audio_format = "mp3"
-
-    download_audio(video_url, audio_format)

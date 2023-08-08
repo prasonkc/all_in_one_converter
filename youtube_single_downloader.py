@@ -51,10 +51,6 @@ def download_single_video(url):
 
     try:
         yt = YouTube(url)
-        if yt.age_restricted:
-            print("Sorry, we do not support age-restricted downloads.")
-            return
-
         stream = yt.streams.filter(res=resolution, file_extension=video_format).first()
         if stream:
             print(f"Downloading video '{yt.title}' in {resolution} and {video_format.upper()}...")
