@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader</title>
+    <link rel="stylesheet" href="../static/css/sty3e.css">
+</head>
+<body>
+    <h1>YouTube Downloader</h1>
+    <div class="container">
+        <div class="input-section">
+            <input type="text" id="videoUrlInput" placeholder="Enter YouTube video URL">
+            <button id="downloadBtn" onclick="downloadVideo()">Download</button>
+        </div>
+        <div class="format-section">
+            <label for="formatSelect">Select Format:</label>
+            <select id="formatSelect">
+                <option value="mp4">MP4</option>
+                <option value="mp3">MP3</option>
+            </select>
+        </div>
+        <div class="resolution-section">
+            <label for="resolutionSelect">Select Resolution:</label>
+            <select id="resolutionSelect">
+                <option value="1080p">1080p</option>
+                <option value="720p">720p</option>
+                <option value="480p">480p</option>
+                <!-- Add more resolution options here -->
+            </select>
+        </div>
+        <a href="./yt_bulk_download.html"><button class="bulk-download">Or Bulk Download Here</button></a>
+    </div>
+    <script>
+        function downloadVideo() {
+            const videoUrl = document.getElementById('videoUrlInput').value;
+            const formatSelect = document.getElementById('formatSelect');
+            const resolutionSelect = document.getElementById('resolutionSelect');
+            const selectedFormat = formatSelect.value;
+            const selectedResolution = resolutionSelect.value;
+
+            // Simulate downloading by setting a timeout
+            setTimeout(() => {
+                // Simulate download completion
+                // Here you would actually download the video using a server or some library
+                alert(`Video downloaded in ${selectedFormat.toUpperCase()} format and ${selectedResolution} resolution`);
+            }, 3000); // Simulated download time
+
+            // You can perform actual download using server APIs or libraries here
+        }
+    </script>
+</body>
+</html>

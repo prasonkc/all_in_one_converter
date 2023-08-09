@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Bulk Downloader</title>
+    <link rel="stylesheet" href="../static/css/sty3e.css">
+</head>
+<body>
+    <h1>YouTube Bulk Downloader</h1>
+    <div class="container">
+        <textarea id="videoUrls" rows="5" placeholder="Enter YouTube video URLs (one per line)"></textarea>
+        <button id="downloadBtn">Download</button>
+    </div>
+    <a href="yt_downloader.html"><button class="bulk-download">Or Single Download Here</button></a>
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const downloadBtn = document.getElementById('downloadBtn');
+    const videoUrlsTextArea = document.getElementById('videoUrls');
+    const formatSelect = document.getElementById('formatSelect');
+
+    downloadBtn.addEventListener('click', () => {
+        const videoUrls = videoUrlsTextArea.value.trim().split('\n');
+        const selectedFormat = formatSelect.value;
+
+        if (videoUrls.length === 0) {
+            alert('Please enter at least one video URL.');
+            return;
+        }
+
+        for (const url of videoUrls) {
+            // Implement your download logic here for each video URL and format
+            console.log(`Downloading ${selectedFormat} for ${url}`);
+        }
+
+        alert('Bulk download completed.');
+    });
+
+    const bulkDownloadButton = document.querySelector('.bulk-download');
+    bulkDownloadButton.addEventListener('click', () => {
+        // Implement the redirect or action for single download
+        console.log('Redirect to single download page');
+    });
+});
+
+    </script>
+</body>
+</html>
