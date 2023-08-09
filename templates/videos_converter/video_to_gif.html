@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GIF Converter</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <h1>Video To GIF</h1>
+    <div class="container">
+      <div class="left-side">
+        <label class="upload-box" for="videoInput">
+          Drop or Click to Browse
+          <input
+            type="file"
+            accept="video/*"
+            id="videoInput"
+            style="display: none"
+          />
+        </label>
+      </div>
+      <div class="right-side">
+        <button id="convertBtn" style="display: none" onclick="convertGif()">
+          Convert
+        </button>
+        <button
+          id="downloadBtn"
+          style="display: none"
+          onclick="downloadConvertedGif()"
+        >
+          Download
+        </button>
+        <img id="preview" alt="" style="display: none" />
+      </div>
+    </div>
+    <script>
+      let convertedGifBlob = null;
+
+      function convertGif() {
+        // Simulate conversion by setting a timeout
+        setTimeout(() => {
+          // Simulate conversion completion
+          // Here you would actually convert the GIF using a server or some library
+          const preview = document.getElementById("preview");
+          convertedGifBlob = new Blob([convertedGifBlob], {
+            type: "image/gif",
+          });
+          preview.src = URL.createObjectURL(convertedGifBlob);
+          preview.style.display = "block";
+          document.getElementById("downloadBtn").style.display = "block";
+        }, 3000); // Simulated conversion time
+
+        // You can perform actual conversion using server APIs or libraries here
+      }
+
+      function downloadConvertedGif() {
+        if (convertedGifBlob) {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(convertedGifBlob);
+          a.download = "converted_image.gif"; // Change the filename as needed
+          a.click();
+        }
+      }
+
+      const uploadBox = document.querySelector(".upload-box");
+      const videoInput = document.getElementById("videoInput");
+
+      uploadBox.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadBox.style.border = "2px dashed #007bff";
+      });
+
+      uploadBox.addEventListener("dragleave", () => {
+        uploadBox.style.border = "2px dashed #007bff";
+      });
+
+      uploadBox.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadBox.style.border = "2px dashed #007bff";
+        convertedGifBlob = e.dataTransfer.files[0];
+        document.getElementById("convertBtn").style.display = "block";
+      });
+
+      uploadBox.addEventListener("click", () => {
+        videoInput.click();
+      });
+
+      videoInput.addEventListener("change", () => {
+        convertedGifBlob = videoInput.files[0];
+        document.getElementById("convertBtn").style.display = "block";
+      });
+    </script>
+  </body>
+</html>

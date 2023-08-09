@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video to Audio Converter</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <h1>Video to Audio</h1>
+    <div class="container">
+      <div class="left-side">
+        <label class="upload-box" for="videoInput">
+          Drop or Click to Browse
+          <input
+            type="file"
+            accept="video/*"
+            id="videoInput"
+            style="display: none"
+          />
+        </label>
+      </div>
+      <div class="right-side">
+        <select id="formatSelect">
+          <option value="mp3">MP3</option>
+          <option value="ogg">OGG</option>
+          <option value="wav">WAV</option>
+          <!-- Add more audio format options here -->
+        </select>
+        <button id="convertBtn" style="display: none" onclick="convertVideo()">
+          Convert
+        </button>
+        <button
+          id="downloadBtn"
+          style="display: none"
+          onclick="downloadConvertedAudio()"
+        >
+          Download
+        </button>
+        <audio id="preview" controls style="display: none"></audio>
+      </div>
+    </div>
+    <script>
+      let convertedAudioBlob = null;
+
+      function convertVideo() {
+        const formatSelect = document.getElementById("formatSelect");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const preview = document.getElementById("preview");
+
+        const selectedFormat = formatSelect.value;
+
+        // Simulate conversion by setting a timeout
+        setTimeout(() => {
+          // Simulate conversion completion
+          // Here you would actually convert the video to audio using a server or some library
+          downloadBtn.style.display = "block";
+          preview.style.display = "block";
+          preview.src = URL.createObjectURL(convertedAudioBlob);
+          convertedAudioBlob = new Blob([convertedAudioBlob], {
+            type: "audio/" + selectedFormat,
+          });
+        }, 3000); // Simulated conversion time
+
+        // You can perform actual conversion using server APIs or libraries here
+      }
+
+      function downloadConvertedAudio() {
+        if (convertedAudioBlob) {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(convertedAudioBlob);
+          a.download = "converted_audio.mp3"; // Change the filename as needed
+          a.click();
+        }
+      }
+
+      const uploadBox = document.querySelector(".upload-box");
+      const videoInput = document.getElementById("videoInput");
+
+      uploadBox.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadBox.style.border = "2px dashed #007bff";
+      });
+
+      uploadBox.addEventListener("dragleave", () => {
+        uploadBox.style.border = "2px dashed #007bff";
+      });
+
+      uploadBox.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadBox.style.border = "2px dashed #007bff";
+        convertedAudioBlob = e.dataTransfer.files[0];
+        document.getElementById("convertBtn").style.display = "block";
+      });
+
+      uploadBox.addEventListener("click", () => {
+        videoInput.click();
+      });
+
+      videoInput.addEventListener("change", () => {
+        convertedAudioBlob = videoInput.files[0];
+        document.getElementById("convertBtn").style.display = "block";
+      });
+    </script>
+  </body>
+</html>
