@@ -1,0 +1,135 @@
+/* Reset some default styles */
+body, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Dark theme */
+body {
+    background-color: #1a1a1a;
+    color: #f1f1f1;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #333;
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.brand-name {
+    text-align: left;
+}
+
+.brand-name h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.brand-name p {
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+.main {
+    padding: 40px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 28px;
+    margin: 20px 0;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 600px;
+    position: relative; /* Add position: relative */
+}
+
+.icon {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.icon img {
+    width: 80px;
+    height: 80px;
+}
+
+.icon p {
+    font-size: 18px;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+.hover-options {
+    display: none;
+    position: absolute;
+    top: 45%;
+    left: -52px;
+    transform: translateY(-50%); /* Center vertically */
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    width: 150px; /* Adjust the width */
+}
+
+.hover-options a {
+    display: block;
+    padding: 8px 10px;
+    color: #f1f1f1;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.hover-options a:hover {
+    background-color: #333;
+}
+
+.icon:hover {
+    transform: translateY(-10px);
+}
+
+.icon:hover .hover-options {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.download-youtube {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    margin-top: 40px; /* Add margin to the top */
+    margin-bottom: 20px; /* Add margin to the bottom */
+}
+
+.download-youtube img {
+    width: 80px;
+    height: 80px;
+}
+
+.download-youtube p {
+    font-size: 18px;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+.download-youtube:hover {
+    transform: translateY(-10px);
+}
