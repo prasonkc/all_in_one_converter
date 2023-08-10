@@ -19,7 +19,7 @@ body {
 
 .left-side {
   flex: 1;
-  padding: 20px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,15 +28,17 @@ body {
 }
 
 .upload-box {
-  width: 80%;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 2px dashed #007bff;
-  border-radius: 10px;
-  cursor: pointer;
+	width: 61%;
+	height: 220px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 2px dashed #007bff;
+	border-radius: 10px;
+	cursor: pointer;
+	padding: 66px;
+	text-align: center;
 }
 
 .right-side {
@@ -74,7 +76,7 @@ button {
   margin-top: 10px;
 }
 
-video{
+video {
   margin: 10px;
 }
 
@@ -92,9 +94,19 @@ h1 {
   display: none; /* Hide the heading by default */
 }
 
+form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
 @media screen and (min-width: 900px) {
   h1 {
-    display: block; /* Show the heading on screens wider than 768px */
+    display: block; /* Show the heading on screens wider than 900px */
   }
 }
 

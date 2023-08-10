@@ -32,7 +32,6 @@ videoInput.addEventListener("change", () => {
   convertBtn.style.display = "block"; // Show the Convert button
 });
 
-
 function convertVideo() {
   const videoInput = document.getElementById("videoInput");
   const selectedFile = videoInput.files[0];
@@ -50,13 +49,10 @@ function convertVideo() {
     formData.append("video", selectedFile);
     formData.append("format", selectedFormat);
 
-    console.log(formData)
+    console.log(formData);
 
     fetch("/video_to_video_converter", {
       method: "POST",
-      headers: {
-        "Content-Disposition": "attachment; filename=video.mp4", // Change the filename as needed
-      },
       body: formData,
     })
       .then((response) => response.json())
@@ -69,13 +65,8 @@ function convertVideo() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  } else {
-    console.log("No file selected.");
-    alert("No File Selected");
   }
 }
-
-
 
 function downloadConvertedVideo() {
   if (convertedVideoBlob) {
