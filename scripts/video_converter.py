@@ -1,19 +1,13 @@
 from moviepy.editor import VideoFileClip
 from moviepy.editor import *
 import os
+import time
+import threading
+
+CONVERTED_DIR = "../converted"
 
 
-def convert_video(input_file, output_file, output_format):
-    """
-    Args:
-        input_file: The file path of the video to be converted.
-        output_file: The file path of the converted video.
-        output_format: The format of the output video file.
-
-    Returns:
-        True if the conversion was successful, False otherwise.
-    """
-
+def convert_video_to_video(input_file, output_format):
     valid_codecs = {
         ".mp4": ("libx264", "aac"),
         ".avi": ("libx264", "aac"),
@@ -29,7 +23,6 @@ def convert_video(input_file, output_file, output_format):
         ".divx": ("mpeg4", "mp3"),
         ".ts": ("mpeg2video", "mp2"),
         ".vob": ("mpeg2video", "mp2"),
-        ".mov": ("prores", "pcm_s16le"),
         # Add more formats and codecs as needed
     }
 
@@ -44,10 +37,18 @@ def convert_video(input_file, output_file, output_format):
         video = VideoFileClip(input_file)
         video_codec, audio_codec = valid_codecs[output_format]
 
-        output_dir = os.path.dirname(output_file)
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(CONVERTED_DIR, exist_ok=True)
+
+        filename = input_file.split(".")[0]
+
+        timestamp = int(time.time())
+        output_filename = f"{filename}_converted_{timestamp}{output_format}"
+        output_file = os.path.join(CONVERTED_DIR, output_filename)
 
         video.write_videofile(output_file, codec=video_codec, audio_codec=audio_codec, preset='ultrafast')
+
+        threading.Timer(3600, delete_converted_video, args=(output_file,)).start()
+
     except ValueError as ve:
         print(f"ValueError during conversion: {ve}")
         return False
@@ -64,9 +65,9 @@ def convert_video(input_file, output_file, output_format):
     return True
 
 
-if __name__ == "__main__":
-    input_file = input("Enter the path of the input video file: ")
-    output_format = input("Enter the desired output video format (e.g., .mp4, .avi, .webm, etc.): ")
-    output_file = input("Enter the desired path of the output video file: ")
-
-    convert_video(input_file, output_file, output_format)
+def delete_converted_video(path):
+    try:
+        os.remove(path)
+        print(f"Deleted {path}")
+    except Exception as e:
+        print(f"Error deleting {path}: {e}")

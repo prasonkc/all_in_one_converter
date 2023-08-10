@@ -74,15 +74,49 @@ button {
   margin-top: 10px;
 }
 
+video{
+  margin: 10px;
+}
+
 h1 {
   position: absolute;
-  top: 7%;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   font-size: 32px;
-  margin: 10px 0;
   color: #f1f1f1;
   font-family: "Roboto", sans-serif;
   text-decoration: underline;
+  margin: 10px 0;
+  display: none; /* Hide the heading by default */
+}
+
+@media screen and (min-width: 900px) {
+  h1 {
+    display: block; /* Show the heading on screens wider than 768px */
+  }
+}
+
+.loading-animation {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
