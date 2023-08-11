@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_from_directory
 from scripts.video_converter import convert_video_to_video
 import os
 
@@ -41,6 +41,14 @@ def video_to_video_converter():
         else:
             return jsonify(error="No File Selected"), 400
 
+@app.route('/converted/<path:filename>')
+def download_converted_video(filename):
+    converted_dir = os.path.join(os.getcwd(), 'converted')
+    file_path = os.path.join(converted_dir, filename) 
+    response = send_from_directory(converted_dir, filename)
+
+    os.remove(file_path)
+    return response
 
 if __name__ == '__main__':
     app.run()

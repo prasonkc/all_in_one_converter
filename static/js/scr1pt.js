@@ -46,17 +46,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedFormat = formatSelect.value;
     const convertBtn = document.getElementById("convertBtn");
     const uploadStatus = document.getElementById("uploadStatus");
-    // const loadingAnimation = document.getElementById("loadingAnimation");
+    const dropboxText = document.getElementById("dropboxText");
+    const preview = document.getElementById("preview")
 
     if (selectedFile) {
       uploadStatus.style.display = "block";
-      // loadingAnimation.style.display = "block";
+      dropboxText.style.display = "none";
 
       const formData = new FormData();
       formData.append("video", selectedFile, selectedFile.name); // Append video file correctly
       formData.append("format", selectedFormat);
 
-      console.log(formData)
+      console.log(formData);
 
       fetch("/video_to_video_converter", {
         method: "POST",
@@ -68,29 +69,30 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           const videoFilename = data.video_filename;
-  
-          console.log(videoFilename);
+          const videoURL = "/converted/" + videoFilename;
 
           convertBtn.style.display = "none";
           downloadBtn.style.display = "block";
+          dropboxText.style.display = "block";
+          uploadStatus.style.display = "none";
+          
+          preview.src = videoURL
           preview.style.display = "block";
 
           downloadBtn.setAttribute("data-video-file", videoFilename);
-          downloadBtn.setAttribute("data-video-url", "/converted/" + videoFilename);        })
+          downloadBtn.setAttribute("data-video-url", videoURL);
+        })
         .catch((error) => {
           console.error("Error:", error);
         });
     }
   }
 
-  function downloadConvertedVideo(){
+  function downloadConvertedVideo() {
     const downloadBtn = document.getElementById("downloadBtn");
     const videoFile = downloadBtn.getAttribute("data-video-file");
-    const videoURL = downloadBtn.getAttribute("data-video-url")
-    console.log(videoFile)
-    console.log(videoURL)
+    const videoURL = downloadBtn.getAttribute("data-video-url");
 
     const a = document.createElement("a");
     a.style.display = "none";
@@ -101,6 +103,5 @@ document.addEventListener("DOMContentLoaded", function () {
     a.click();
 
     document.body.removeChild(a);
-
   }
 });

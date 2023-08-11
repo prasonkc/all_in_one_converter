@@ -12,8 +12,10 @@
       <div class="left-side">
         <form id="uploadForm" enctype="multipart/form-data">
           <label class="upload-box" for="videoInput">
-            Drop or Click to Browse
+            <div id="dropboxText" style="display: block">Drop or Click to Browse
+            </div>
             <div id="uploadStatus" style="display: none">Converting...</div>
+            
             <input
               type="file"
               accept="video/*"
@@ -37,9 +39,10 @@
         <button id="convertBtn" type="button">
           Convert
         </button>
-        <video id="preview" controls style="display: none"></video>
+        <div id = "preview">
+          Download Ready </div>
         <button
-          id="downloadBtn"
+          id="downloadBtn"  
           style="display: none"
         >
         Download
