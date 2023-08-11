@@ -46,11 +46,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedFormat = formatSelect.value;
     const convertBtn = document.getElementById("convertBtn");
     const uploadStatus = document.getElementById("uploadStatus");
-    const loadingAnimation = document.getElementById("loadingAnimation");
+    // const loadingAnimation = document.getElementById("loadingAnimation");
 
     if (selectedFile) {
       uploadStatus.style.display = "block";
-      loadingAnimation.style.display = "block";
+      // loadingAnimation.style.display = "block";
 
       const formData = new FormData();
       formData.append("video", selectedFile, selectedFile.name); // Append video file correctly
@@ -67,24 +67,40 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       })
         .then((response) => response.json())
-        .then((result) => {
-          console.log(result);
+        .then((data) => {
+          console.log(data);
+          const videoFilename = data.video_filename;
+  
+          console.log(videoFilename);
+
           convertBtn.style.display = "none";
           downloadBtn.style.display = "block";
           preview.style.display = "block";
-        })
+
+          downloadBtn.setAttribute("data-video-file", videoFilename);
+          downloadBtn.setAttribute("data-video-url", "/converted/" + videoFilename);        })
         .catch((error) => {
           console.error("Error:", error);
         });
     }
-                if (convert_video_success) {
-                const downloadLink = document.getElementById("downloadLink");
-                const convertedFilename = response.converted_filename; // Assuming the response contains the converted filename
-                const convertedVideoUrl = "../../converted/" + convertedFilename; // Update with your actual path
+  }
 
-                downloadLink.href = convertedVideoUrl;
-                document.getElementById("downloadDiv").style.display = "block";
-            }
+  function downloadConvertedVideo(){
+    const downloadBtn = document.getElementById("downloadBtn");
+    const videoFile = downloadBtn.getAttribute("data-video-file");
+    const videoURL = downloadBtn.getAttribute("data-video-url")
+    console.log(videoFile)
+    console.log(videoURL)
+
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = videoURL;
+    a.download = videoFile;
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
 
   }
 });

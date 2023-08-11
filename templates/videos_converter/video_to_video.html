@@ -14,7 +14,6 @@
           <label class="upload-box" for="videoInput">
             Drop or Click to Browse
             <div id="uploadStatus" style="display: none">Converting...</div>
-            <div class="loading-animation" id="loadingAnimation"></div>
             <input
               type="file"
               accept="video/*"
@@ -34,23 +33,17 @@
           <option value="mov">MOV</option>
           <option value="flv">FLV</option>
           <option value="wmv">WMV</option>
-          <option value="m4v">M4V</option>
-          <option value="3GP">3GP</option>
-          <option value="ogv">OGV</option>
-          <option value="webp">WEBP</option>
-          <option value="divx">DIVX</option>
-          <option value="ts">TS</option>
-          <option value="vob">VOB</option>
         </select>
-        <button id="convertBtn" type="button" onclick="convertVideo()">
+        <button id="convertBtn" type="button">
           Convert
         </button>
         <video id="preview" controls style="display: none"></video>
         <button
           id="downloadBtn"
-          style="display: none">
-           <a id="downloadLink" href="" download>Download Converted Video</a>
-        </button>
+          style="display: none"
+        >
+        Download
+      </button>
       </div>
     </div>
     <script src="../static/js/scr1pt.js"></script>

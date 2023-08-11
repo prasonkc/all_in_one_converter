@@ -1,10 +1,8 @@
 from flask import Flask, request, render_template, jsonify
 from scripts.video_converter import convert_video_to_video
-import base64
 import os
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def hello_world():
@@ -19,14 +17,14 @@ def video_to_video_converter():
         return render_template("videos_converter/video_to_video.html")
     else:
         print("Post method loaded")
-        video_data = request.files.get("video")  # Access uploaded file using request.files
-        selected_format = "." + request.form.get("format")  # Get the selected format from the form
-        print(video_data)
-        print(format)
+        video_data = request.files.get("video") 
+        selected_format = "." + request.form.get("format")
+        video_filename = video_data.filename
+
 
         if video_data:
             # create temporary video file
-            temp_video_path = "temp_video" + selected_format
+            temp_video_path = "./temp/" + video_filename
             video_data.save(temp_video_path)
             # Convert the video
             print("Now converting....")
@@ -36,8 +34,10 @@ def video_to_video_converter():
             if converted_file_path:
                 # Clean up the temporary video file
                 os.remove(temp_video_path)
-
-            return jsonify(converted_file_path)
+                
+            video_filename = converted_file_path.split("/")[-1]
+            return jsonify(video_filename = video_filename, converted_file_path = converted_file_path)
+        
         else:
             return jsonify(error="No File Selected"), 400
 

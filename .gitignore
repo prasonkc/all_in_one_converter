@@ -1,2 +1,6 @@
 /venv
 test.py
+/.idea
+/__pycache__
+/converted
+/temp

@@ -4,8 +4,7 @@ import os
 import time
 import threading
 
-CONVERTED_DIR = "../converted"
-
+CONVERTED_DIR = "./converted"
 
 def convert_video_to_video(input_file, output_format):
     valid_codecs = {
@@ -15,14 +14,7 @@ def convert_video_to_video(input_file, output_format):
         ".mkv": ("libx264", "aac"),
         ".mov": ("libx264", "aac"),
         ".flv": ("libx264", "aac"),
-        ".wmv": ("wmv2", "wmav2"),
-        ".m4v": ("libx264", "aac"),
-        ".3gp": ("libx264", "aac"),
-        ".ogv": ("libtheora", "libvorbis"),
-        ".webp": ("libwebp", "libvorbis"),
-        ".divx": ("mpeg4", "mp3"),
-        ".ts": ("mpeg2video", "mp2"),
-        ".vob": ("mpeg2video", "mp2"),
+        ".wmv": ("wmv2", "wmav2")
         # Add more formats and codecs as needed
     }
 
@@ -39,7 +31,8 @@ def convert_video_to_video(input_file, output_format):
 
         os.makedirs(CONVERTED_DIR, exist_ok=True)
 
-        filename = input_file.split(".")[0]
+        filename = input_file[7:].split(".")[0]
+        print(filename)
 
         timestamp = int(time.time())
         output_filename = f"{filename}_converted_{timestamp}{output_format}"
@@ -62,6 +55,7 @@ def convert_video_to_video(input_file, output_format):
         video.close()
 
     print("Conversion completed!")
+    print(output_file)
     return output_file
 
 
