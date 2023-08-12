@@ -101,26 +101,60 @@ document.addEventListener("DOMContentLoaded", function () {
         })
           .then((response) => response.json())
           .then((data) => {
-            const videoFilename = data.video_filename;
-            const videoURL = "/converted/" + videoFilename;
+            const convertedFilename = data.video_filename;
+            const convertedURL = "/converted/" + convertedFilename;
 
-            console.log(videoFilename)
-            console.log(videoURL)
+            console.log(convertedFilename)
+            console.log(convertedURL)
             
             convertedAnimationFrontend()
 
-            preview.src = videoURL
+            preview.src = convertedURL
             preview.style.display = "block";
             preview.innerHTML = "Download Ready";
 
-            downloadBtn.setAttribute("data-video-file", videoFilename);
-            downloadBtn.setAttribute("data-video-url", videoURL);
+            downloadBtn.setAttribute("data-converted-file", convertedFilename);
+            downloadBtn.setAttribute("data-converted-url", convertedURL);
           })
           .catch((error) => {
             console.error("Error:", error);
           });
       }
       else if (currentUrl.includes("/video_to_audio_converter")){
+        const formData = new FormData();
+        formData.append("video", selectedFile);
+        formData.append("format", selectedFormat);
+
+        console.log(formData);
+
+        fetch("/video_to_audio_converter", {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const convertedFilename = data.audio_filename;
+            const convertedURL = "/converted/" + convertedFilename;
+
+            console.log(convertedFilename)
+            console.log(convertedURL)
+            
+            convertedAnimationFrontend()
+
+            preview.src = convertedURL
+            preview.style.display = "block";
+            preview.innerHTML = "Download Ready";
+
+            downloadBtn.setAttribute("data-converted-file", convertedFilename);
+            downloadBtn.setAttribute("data-converted-url", convertedURL);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
 
       }
      
@@ -129,15 +163,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function downloadConvertedVideo() {
     const downloadBtn = document.getElementById("downloadBtn");
-    const videoFile = downloadBtn.getAttribute("data-video-file");
-    const videoURL = downloadBtn.getAttribute("data-video-url");
+    const convertedFilename = downloadBtn.getAttribute("data-converted-file");
+    const convertedURL = downloadBtn.getAttribute("data-converted-url");
     const preview = document.getElementById("preview");
     const convertBtn = document.getElementById("convertBtn");
 
     const a = document.createElement("a");
     a.style.display = "none";
-    a.href = videoURL;
-    a.download = videoFile;
+    a.href = convertedURL;
+    a.download = convertedFilename;
     preview.innerHTML = "Download Complete";
     convertBtn.style.display = "block";
     downloadBtn.style.display = "none";

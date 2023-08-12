@@ -3,42 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video to Audio Converter</title>
-    <link rel="stylesheet" href="../../static/css/sty2e.css">
+    <title>Video Converter</title>
+    <link rel="stylesheet" href="../../static/css/sty2e.css" />
   </head>
-
   <body>
-    <h1>Video to Audio</h1>
+    <h1>Video Converter</h1>
     <div class="container">
       <div class="left-side">
-        <label class="upload-box" for="videoInput">
-          Drop or Click to Browse
-          <input
-            type="file"
-            accept="video/*"
-            id="videoInput"
-            style="display: none"
-          />
-        </label>
+          <label class="upload-box" for="videoInput">
+            <div id="dropboxText" style="display: block">Drop or Click to Browse
+            </div>
+            <div id="attachment" style="display: none"></div>
+            <div id="uploadStatus" style="display: none">Converting...</div>
+            <div id="loader"></div>
+            <input
+              type="file"
+              accept="video/*"
+              id="videoInput"
+              style="display: none"
+              name="video"
+            />
+          </label>
       </div>
       <div class="right-side">
         <select id="formatSelect">
           <option value="mp3">MP3</option>
           <option value="ogg">OGG</option>
           <option value="wav">WAV</option>
-          <!-- Add more audio format options here -->
         </select>
-        <button id="convertBtn" style="display: none" onclick="convertVideo()">
+        <button id="convertBtn" type="button">
           Convert
         </button>
+        <div id = "preview">
+        </div>
         <button
-          id="downloadBtn"
+          id="downloadBtn"  
           style="display: none"
-          onclick="downloadConvertedAudio()"
         >
-          Download
-        </button>
-        <audio id="preview" controls style="display: none"></audio>
+        Download
+      </button>
       </div>
     </div>
     <script src="../static/js/scr1pt.js"></script>

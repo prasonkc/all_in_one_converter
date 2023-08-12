@@ -31,7 +31,8 @@ def convert_video_to_video(input_file, output_format):
 
         os.makedirs(CONVERTED_DIR, exist_ok=True)
 
-        filename = input_file[7:].split(".")[0]
+        filename = input_file[7:].split(".")[0] 
+        # input path = ./temp/ ie 7 letters
         print(filename)
 
         timestamp = int(time.time())
