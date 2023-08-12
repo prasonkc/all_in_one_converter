@@ -40,7 +40,7 @@ def convert_video_to_video(input_file, output_format):
 
         video.write_videofile(output_file, codec=video_codec, audio_codec=audio_codec, preset='ultrafast')
 
-        # threading.Timer(600, delete_converted_video, args=(output_file,)).start()
+        threading.Timer(600, delete_converted_video, args=(output_file,)).start()
 
     except ValueError as ve:
         print(f"ValueError during conversion: {ve}")
@@ -59,9 +59,9 @@ def convert_video_to_video(input_file, output_format):
     return output_file
 
 
-# def delete_converted_video(path):
-#     try:
-#         os.remove(path)
-#         print(f"Deleted {path}")
-#     except Exception as e:
-#         print(f"Error deleting {path}: {e}")
+def delete_converted_video(path):
+    try:
+        os.remove(path)
+        print(f"Deleted {path}")
+    except Exception as e:
+        print(f"Error deleting {path}: {e}")

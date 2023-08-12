@@ -10,12 +10,12 @@
     <h1>Video Converter</h1>
     <div class="container">
       <div class="left-side">
-        <form id="uploadForm" enctype="multipart/form-data">
           <label class="upload-box" for="videoInput">
             <div id="dropboxText" style="display: block">Drop or Click to Browse
             </div>
+            <div id="attachment" style="display: none"></div>
             <div id="uploadStatus" style="display: none">Converting...</div>
-            
+            <div id="loader"></div>
             <input
               type="file"
               accept="video/*"
@@ -24,7 +24,6 @@
               name="video"
             />
           </label>
-        </form>
       </div>
       <div class="right-side">
         <select id="formatSelect">
@@ -40,7 +39,7 @@
           Convert
         </button>
         <div id = "preview">
-          Download Ready </div>
+        </div>
         <button
           id="downloadBtn"  
           style="display: none"
