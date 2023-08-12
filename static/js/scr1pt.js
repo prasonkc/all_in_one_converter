@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const downloadBtn = document.getElementById("downloadBtn");
   const dropboxText = document.getElementById("dropboxText");
   const attachment = document.getElementById("attachment");
-  const preview = document.getElementById("preview")
+  const preview = document.getElementById("preview");
 
 
   uploadBox.addEventListener("dragover", (e) => {
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     uploadBox.style.border = "2px dashed #007bff";
     videoBlob = e.dataTransfer.files[0];
     updateAttachment(videoBlob.name);
-    preview.style.display  = "none"
+    preview.style.display  = "none";
   });
 
   uploadBox.addEventListener("click", () => {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     videoBlob = videoInput.files[0];
     console.log("Selected file:",videoBlob);
     convertBtn.style.display = "block";
-    preview.style.display  = "none"
+    preview.style.display  = "none";
     updateAttachment(videoBlob.name);
   });
 
@@ -50,8 +50,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateAttachment(fileName) {
     attachment.textContent = `Attached File: ${fileName}`;
-    dropboxText.style.display = "none"
+    dropboxText.style.display = "none";
     attachment.style.display = "block";
+  }
+
+  function convertedAnimationFrontend(){
+
+    const convertBtn = document.getElementById("convertBtn");
+    const uploadStatus = document.getElementById("uploadStatus");
+    const loader = document.getElementById("loader");
+
+      
+    convertBtn.style.display = "none";
+    downloadBtn.style.display = "block";
+    uploadStatus.style.display = "none";
+    attachment.innerHTML = `Converted file: ${videoBlob.name}`;
+    attachment.style.display = "block";
+    loader.style.display = "none";
+
   }
 
   function convertVideo() {
@@ -59,53 +75,55 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedFile = videoInput.files[0];
     const formatSelect = document.getElementById("formatSelect");
     const selectedFormat = formatSelect.value;
-    const convertBtn = document.getElementById("convertBtn");
-    const uploadStatus = document.getElementById("uploadStatus");
-    const loader = document.getElementById("loader")
 
+    const currentUrl = window.location.href;
 
     if (selectedFile) {
       uploadStatus.style.display = "block";
       dropboxText.style.display = "none";
-      loader.style.display = "block"
-      attachment.style.display = "none"
-
-      const formData = new FormData();
-      formData.append("video", selectedFile, selectedFile.name); // Append video file correctly
-      formData.append("format", selectedFormat);
-
-      console.log(formData);
-
-      fetch("/video_to_video_converter", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const videoFilename = data.video_filename;
-          const videoURL = "/converted/" + videoFilename;
-
-          convertBtn.style.display = "none";
-          downloadBtn.style.display = "block";
-          uploadStatus.style.display = "none";
-          attachment.innerHTML = `Converted file: ${videoBlob.name}`
-          attachment.style.display = "block"
-          loader.style.display = "none"
-          preview.innerHTML = "Download Ready"
-          
-          preview.src = videoURL
-          preview.style.display = "block";
-
-          downloadBtn.setAttribute("data-video-file", videoFilename);
-          downloadBtn.setAttribute("data-video-url", videoURL);
+      loader.style.display = "block";
+      attachment.style.display = "none";
+       
+      if (currentUrl.includes("/video_to_video_converter")){
+        const formData = new FormData();
+        formData.append("video", selectedFile, selectedFile.name); // Append video file correctly
+        formData.append("format", selectedFormat);
+  
+        console.log(formData);
+  
+        fetch("/video_to_video_converter", {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            const videoFilename = data.video_filename;
+            const videoURL = "/converted/" + videoFilename;
+
+            console.log(videoFilename)
+            console.log(videoURL)
+            
+            convertedAnimationFrontend()
+
+            preview.src = videoURL
+            preview.style.display = "block";
+            preview.innerHTML = "Download Ready";
+
+            downloadBtn.setAttribute("data-video-file", videoFilename);
+            downloadBtn.setAttribute("data-video-url", videoURL);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      else if (currentUrl.includes("/video_to_audio_converter")){
+
+      }
+     
     }
   }
 
@@ -113,18 +131,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const downloadBtn = document.getElementById("downloadBtn");
     const videoFile = downloadBtn.getAttribute("data-video-file");
     const videoURL = downloadBtn.getAttribute("data-video-url");
-    const preview = document.getElementById("preview")
-    const convertBtn = document.getElementById("convertBtn")
+    const preview = document.getElementById("preview");
+    const convertBtn = document.getElementById("convertBtn");
 
     const a = document.createElement("a");
     a.style.display = "none";
     a.href = videoURL;
     a.download = videoFile;
-    preview.innerHTML = "Download Complete"
-    convertBtn.style.display = "block"
-    downloadBtn.style.display = "none"
-    attachment.style.display = "none"
-    dropboxText.style.display = "block"
+    preview.innerHTML = "Download Complete";
+    convertBtn.style.display = "block";
+    downloadBtn.style.display = "none";
+    attachment.style.display = "none";
+    dropboxText.style.display = "block";
 
     document.body.appendChild(a);
     a.click();
