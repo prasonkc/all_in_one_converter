@@ -4,3 +4,4 @@ test.py
 /__pycache__
 /converted
 /temp
+scripts/__pycache__
