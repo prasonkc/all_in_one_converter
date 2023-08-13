@@ -4,97 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Video to Frames Converter</title>
-    <link rel="stylesheet" href="../../static/css/sty2e.css">
+    <link rel="stylesheet" href="../../static/css/sty2e.css" />
   </head>
   <body>
-    <h1>Video To Frames</h1>
-
+    <h1>Video to Frames Converter</h1>
     <div class="container">
       <div class="left-side">
-        <label class="upload-box" for="videoInput">
-          Drop or Click to Browse
-          <input
-            type="file"
-            accept="video/*"
-            id="videoInput"
-            style="display: none"
-          />
-        </label>
+          <label class="upload-box" for="videoInput">
+            <div id="dropboxText" style="display: block">Drop or Click to Browse
+            </div>
+            <div id="attachment" style="display: none"></div>
+            <div id="uploadStatus" style="display: none">Converting...</div>
+            <div id="loader"></div>
+            <input
+              type="file"
+              accept="video/*"
+              id="videoInput"
+              style="display: none"
+              name="video"
+            />
+          </label>
       </div>
       <div class="right-side">
-        <div id="frameContainer"></div>
-        <button id="convertBtn" style="display: none" onclick="convertVideo()">
+        <select id="formatSelect">
+          <option value="jpeg">JPEG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WEBP</option>
+        </select>
+        <button id="convertBtn" type="button">
           Convert
         </button>
+        <div id = "preview">
+        </div>
         <button
-          id="downloadBtn"
+          id="downloadBtn"  
           style="display: none"
-          onclick="downloadFramesZip()"
         >
-          Download ZIP
-        </button>
+        Download ZIP
+      </button>
       </div>
     </div>
-    <script>
-      let videoFrames = [];
-
-      function convertVideo() {
-        const frameContainer = document.getElementById("frameContainer");
-        const convertBtn = document.getElementById("convertBtn");
-        const downloadBtn = document.getElementById("downloadBtn");
-        frameContainer.innerHTML = "";
-
-        // Simulate frame extraction by setting a timeout
-        setTimeout(() => {
-          // Simulate frame extraction completion
-          // Here you would actually extract frames from the video using a server or some library
-          videoFrames = [...Array(10).keys()]; // Placeholder for frame URLs
-          convertBtn.style.display = "none";
-          downloadBtn.style.display = "block";
-
-          // Display frames
-          videoFrames.forEach((frameUrl) => {
-            const frameElement = document.createElement("img");
-            frameElement.classList.add("frame");
-            frameElement.src = frameUrl;
-            frameContainer.appendChild(frameElement);
-          });
-        }, 3000); // Simulated frame extraction time
-
-        // You can perform actual frame extraction using server APIs or libraries here
-      }
-
-      function downloadFramesZip() {
-        // Simulate downloading frames as a ZIP file
-        // Here you would actually prepare and send the ZIP file using a server
-        alert("Downloading ZIP...");
-      }
-
-      const uploadBox = document.querySelector(".upload-box");
-      const videoInput = document.getElementById("videoInput");
-
-      uploadBox.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        uploadBox.style.border = "2px dashed #007bff";
-      });
-
-      uploadBox.addEventListener("dragleave", () => {
-        uploadBox.style.border = "2px dashed #007bff";
-      });
-
-      uploadBox.addEventListener("drop", (e) => {
-        e.preventDefault();
-        uploadBox.style.border = "2px dashed #007bff";
-        document.getElementById("convertBtn").style.display = "block";
-      });
-
-      uploadBox.addEventListener("click", () => {
-        videoInput.click();
-      });
-
-      videoInput.addEventListener("change", () => {
-        document.getElementById("convertBtn").style.display = "block";
-      });
-    </script>
+    <script src="../static/js/scr1pt.js"></script>
   </body>
 </html>

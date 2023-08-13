@@ -57,6 +57,20 @@ def video_to_gif_converter():
             converted_file_path, filename = save_and_convert_video(video_data, format, convert_video_to_gif)
             
             return jsonify(converted_file_path = converted_file_path, filename = filename)
+        
+@app.route('/video_to_frames_converter', methods = ["GET", "POST"])
+def video_to_frames_converter():
+    if request.method == "GET":
+        return render_template("videos_converter/video_to_frames.html")
+    else:
+        video_data = request.files.get("video")
+        format = request.form.get("format")
+        
+        if video_data:
+            converted_file_path, filename = save_and_convert_video(video_data, format, convert_video_to_frames)
+            
+            return jsonify(converted_file_path = converted_file_path, filename = filename)
+        
     
 @app.route('/converted/<path:filename>')
 def download_converted_video(filename):

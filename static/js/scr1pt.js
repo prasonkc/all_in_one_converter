@@ -131,8 +131,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedFormat = "gif";
 
         url = "/video_to_gif_converter";
-        performRequest(selectedFile, "gif", url);
+        performRequest(selectedFile, selectedFormat, url);
       } else if (currentUrl.includes("/video_to_frames_converter")) {
+        const formatSelect = document.getElementById("formatSelect");
+        const selectedFormat = formatSelect.value;
+
+        url = "/video_to_frames_converter"
+        performRequest(selectedFile, selectedFormat, url)
       }
     }
   }
