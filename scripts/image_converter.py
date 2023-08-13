@@ -1,18 +1,29 @@
 from typing import Union
 from PIL import Image
 import os
+import threading
+import time
 
+CONVERTED_DIR = "./converted"
 
-def convert_image(input_file: str, output_file: str, output_format: str) -> Union[str, None]:
+def convert_image_to_image(input_file: str, output_format: str) -> Union[str, None]:
     try:
         img = Image.open(input_file)
 
         # Convert the image to 'RGB' mode to support JPEG format
         img = img.convert('RGB')
 
-        output_file_with_extension = f"{output_file}.{output_format}"
-        img.save(output_file_with_extension)
-        print(f"Image converted successfully and saved to: {output_file_with_extension}")
+        filename = input_file[7:].split(".")[0] 
+        # input path = ./temp/ ie 7 letters
+
+        timestamp = int(time.time())
+        output_filename = f"{filename}_converted_{timestamp}{output_format}"
+        output_file = os.path.join(CONVERTED_DIR, output_filename)
+
+        img.save(output_file)
+        print(f"Image converted successfully and saved to: {output_file}")
+        threading.Timer(6, delete_converted_image, args=(output_file,)).start()
+        return output_file
 
     except FileNotFoundError as e:
         print(f"Error: {e}")
@@ -21,13 +32,9 @@ def convert_image(input_file: str, output_file: str, output_format: str) -> Unio
     except Exception as e:
         print(f"Error: {e}")
 
-
-if __name__ == "__main__":
-    input_file = input("Enter the path of the input image: ")
-    output_file = input("Enter the path where you want to save the converted image (without extension): ")
-    output_format = input("Enter the desired output format (e.g., PNG, JPEG, GIF, BMP): ").lower()
-
-    if output_format not in ('png', 'jpg', 'jpeg', 'gif', 'bmp'):
-        print("Invalid output format. Supported formats: PNG, JPEG, GIF, BMP")
-    else:
-        convert_image(input_file, output_file, output_format)
+def delete_converted_image(path):
+    try:
+        os.remove(path)
+        print(f"Deleted {path}")
+    except Exception as e:
+        print(f"Error deleting {path}: {e}")

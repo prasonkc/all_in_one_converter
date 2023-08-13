@@ -29,18 +29,12 @@
           </div>
         </div>
         <div class="icon">
-          <a href="./image_converter.html"><img src="../static/images/image-icon.png" alt="Image" /></a>
+          <a href="{{ url_for('image_to_image_converter')}}"><img src="../static/images/image-icon.png" alt="Image" /></a>
           <p>Image</p>
-          <!--            <div class="hover-options">-->
-          <!--                &lt;!&ndash; Add hover options for image &ndash;&gt;-->
-          <!--            </div>-->
         </div>
         <div class="icon">
-          <a href="./audio_converter.html"><img src="../static/images/audio-icon.png" alt="Audio" /></a>
-          <p>Audio</p>
-          <!--            <div class="hover-options">-->
-          <!--                &lt;!&ndash; Add hover options for audio &ndash;&gt;-->
-          <!--            </div>-->
+          <a href="{{url_for('video_to_audio_converter')}}"><img src="../static/images/audio-icon.png" alt="Audio" /></a>
+          <p>Audio</p>  
         </div>
       </div>
       <h2>or</h2>

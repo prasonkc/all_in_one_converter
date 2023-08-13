@@ -136,8 +136,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const formatSelect = document.getElementById("formatSelect");
         const selectedFormat = formatSelect.value;
 
-        url = "/video_to_frames_converter"
-        performRequest(selectedFile, selectedFormat, url)
+        url = "/video_to_frames_converter";
+        performRequest(selectedFile, selectedFormat, url);
+      } else if (currentUrl.includes("/image_to_image_converter")) {
+        const formatSelect = document.getElementById("formatSelect");
+        const selectedFormat = formatSelect.value;
+
+        url = "/image_to_image_converter";
+        performRequest(selectedFile, selectedFormat, url);
       }
     }
   }

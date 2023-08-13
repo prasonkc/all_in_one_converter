@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify, send_from_directory
 from scripts.video_converter import convert_video_to_video
 from scripts.audio_converter import convert_video_to_audio
 from scripts.video_to_x import convert_video_to_frames, convert_video_to_gif
+from scripts.image_converter import convert_image_to_image
 from helpers import save_and_convert_video
 import os
 
@@ -56,7 +57,10 @@ def video_to_gif_converter():
         if video_data:
             converted_file_path, filename = save_and_convert_video(video_data, format, convert_video_to_gif)
             
+        
             return jsonify(converted_file_path = converted_file_path, filename = filename)
+        else:
+            return jsonify(error="No File Selected"), 400
         
 @app.route('/video_to_frames_converter', methods = ["GET", "POST"])
 def video_to_frames_converter():
@@ -70,8 +74,29 @@ def video_to_frames_converter():
             converted_file_path, filename = save_and_convert_video(video_data, format, convert_video_to_frames)
             
             return jsonify(converted_file_path = converted_file_path, filename = filename)
+        else:
+            return jsonify(error="No File Selected"), 400
         
-    
+        
+@app.route('/image_to_image_converter', methods=["GET", "POST"])
+def image_to_image_converter():
+    if request.method == "GET":
+        return render_template("image_converter.html")
+    else:
+        data = request.files.get("video") 
+        # Although, the attachment is image, i am using same js code that appends attachment to FormData with 'video' as key value pair
+        
+        format = "." + request.form.get("format")
+        
+        if(data):
+            converted_file_path, filename = save_and_convert_video(data, format, convert_image_to_image)
+            
+            return jsonify(converted_file_path = converted_file_path, filename = filename)
+
+        else:
+            return jsonify(error="No File Selected"), 400
+        
+
 @app.route('/converted/<path:filename>')
 def download_converted_video(filename):
     converted_dir = os.path.join(os.getcwd(), 'converted')
