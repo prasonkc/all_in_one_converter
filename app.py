@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify, send_from_directory
 from scripts.video_converter import convert_video_to_video
 from scripts.audio_converter import convert_video_to_audio
+from scripts.video_to_x import convert_video_to_frames, convert_video_to_gif
 from helpers import save_and_convert_video
 import os
 
@@ -21,8 +22,8 @@ def video_to_video_converter():
         selected_format = "." + request.form.get("format")
 
         if video_data:
-            converted_file_path, video_filename = save_and_convert_video(video_data, selected_format, convert_video_to_video)
-            return jsonify(video_filename = video_filename, converted_file_path = converted_file_path)
+            converted_file_path, filename = save_and_convert_video(video_data, selected_format, convert_video_to_video)
+            return jsonify(filename = filename, converted_file_path = converted_file_path)
         
         else:
             return jsonify(error="No File Selected"), 400
@@ -37,14 +38,26 @@ def video_to_audio_converter():
         selected_format = request.form.get("format")
        
         if video_data:
-            converted_file_path, audio_filename = save_and_convert_video(video_data, selected_format, convert_video_to_audio)
-            return jsonify(audio_filename = audio_filename, converted_file_path = converted_file_path)
+            converted_file_path, filename = save_and_convert_video(video_data, selected_format, convert_video_to_audio)
+            return jsonify(filename = filename, converted_file_path = converted_file_path)
         
         else:
             return jsonify(error="No File Selected"), 400
 
         
-
+@app.route('/video_to_gif_converter', methods = ["GET", "POST"])
+def video_to_gif_converter():
+    if request.method == "GET":
+        return render_template("videos_converter/video_to_gif.html")
+    else:
+        video_data = request.files.get("video")
+        format = request.form.get("format")
+        
+        if video_data:
+            converted_file_path, filename = save_and_convert_video(video_data, format, convert_video_to_gif)
+            
+            return jsonify(converted_file_path = converted_file_path, filename = filename)
+    
 @app.route('/converted/<path:filename>')
 def download_converted_video(filename):
     converted_dir = os.path.join(os.getcwd(), 'converted')
