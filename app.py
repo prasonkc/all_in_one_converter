@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify, send_from_directory
 from scripts.video_converter import convert_video_to_video
 from scripts.audio_converter import convert_video_to_audio
+from helpers import save_and_convert_video
 import os
 
 app = Flask(__name__)
@@ -18,23 +19,9 @@ def video_to_video_converter():
     else:
         video_data = request.files.get("video") 
         selected_format = "." + request.form.get("format")
-        video_filename = video_data.filename
-
 
         if video_data:
-            # create temporary video file
-            temp_video_path = "./temp/" + video_filename
-            video_data.save(temp_video_path)
-            # Convert the video
-            print("Now converting....")
-
-            converted_file_path = convert_video_to_video(temp_video_path, selected_format)
-
-            if converted_file_path:
-                # Clean up the temporary video file
-                os.remove(temp_video_path)
-                
-            video_filename = converted_file_path.split("/")[-1]
+            converted_file_path, video_filename = save_and_convert_video(video_data, selected_format, convert_video_to_video)
             return jsonify(video_filename = video_filename, converted_file_path = converted_file_path)
         
         else:
@@ -48,22 +35,9 @@ def video_to_audio_converter():
     else:
         video_data = request.files.get("video")
         selected_format = request.form.get("format")
-        video_filename = video_data.filename
-        
+       
         if video_data:
-            # create temporary video file
-            temp_video_path = "./temp/" + video_filename
-            video_data.save(temp_video_path)
-            # Convert the video
-            print("Now converting....")
-
-            converted_file_path = convert_video_to_audio(temp_video_path, selected_format)
-
-            if converted_file_path:
-                # Clean up the temporary video file
-                os.remove(temp_video_path)
-                
-            audio_filename = converted_file_path.split("/")[-1]
+            converted_file_path, audio_filename = save_and_convert_video(video_data, selected_format, convert_video_to_audio)
             return jsonify(audio_filename = audio_filename, converted_file_path = converted_file_path)
         
         else:
