@@ -1,67 +1,43 @@
-from pytube import YouTube
 import os
+from pytube import YouTube
+import threading
+
+output_dir = "./downloads"
 
 
-# Function to dynamically show available video formats and resolutions for a given video URL
-def show_available_formats_and_resolutions(url):
-    try:
-        yt = YouTube(url)
-        available_formats_and_resolutions = []
-
-        for stream in yt.streams.filter(file_extension="mp4"):
-            resolution = stream.resolution
-            audio_info = "YES" if stream.includes_audio_track else "NO"
-            format_info = stream.mime_type.split('/')[1]
-            available_formats_and_resolutions.append((resolution, format_info, audio_info))
-
-        print("Available video resolutions and formats:")
-        for resolution, format_info, audio_info in available_formats_and_resolutions:
-            print(f"{resolution} {format_info.upper()} (Audio: {audio_info})")
-
-        return available_formats_and_resolutions
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return []
-
-
-# Function for downloading a single video
-def download_single_video(url):
-    available_formats_and_resolutions = show_available_formats_and_resolutions(url)
-    if not available_formats_and_resolutions:
-        return
-
-    print("To Ensure both audio and video works properly and there are no errors, it is recommended "
-          "to download 720p in mp4 format")
-    resolution = input("Enter desired video resolution: ").strip()
-
-    if resolution not in [res for res, _, _ in available_formats_and_resolutions]:
-        print("Selected resolution is not available.")
-        return
-
-    video_format = input("Enter desired video format (e.g., mp4, mkv): ").strip().lower()
-    if not video_format:
-        video_format = "mp4"
-    else:
-        video_format = video_format.lower()
-
-    output_path = input("Enter the output directory path (leave blank for current directory): ").strip()
-    if not output_path:
-        output_path = os.getcwd()
+def download_ytVideo(url, resolution):
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
 
     try:
+        # Create a YouTube object
         yt = YouTube(url)
-        stream = yt.streams.filter(res=resolution, file_extension=video_format).first()
+
+        # Get the stream for the specified resolution
+        stream = yt.streams.filter(res=resolution, file_extension="mp4").first()
+        filename = f"{yt.title}.mp4"
+        output_file = os.path.join(output_dir, filename)
+
         if stream:
-            print(f"Downloading video '{yt.title}' in {resolution} and {video_format.upper()}...")
-            stream.download(output_path=output_path)
-            print(f"Download of '{yt.title}' complete.")
+            # Download the video
+            print(f"Downloading '{yt.title}' in {resolution}...")
+            stream.download(output_path=output_dir)
+
+            print(f"Download of '{yt.title}' in {resolution} complete. Saved as '{output_file}'")
+            threading.Timer(600, delete_file, args=(output_file,)).start()
         else:
-            print(f"No video available in {resolution} and {video_format.upper()} for '{yt.title}'.")
+            print(f"No {resolution} video available for '{yt.title}'.")
+            return None, None
+
+        return output_dir, filename
     except Exception as e:
         print(f"An error occurred while downloading '{url}': {e}")
+        return None, None
 
 
-if __name__ == "__main__":
-    video_url = input("Enter YouTube video URL: ").strip()
-    download_single_video(video_url)
+def delete_file(path):
+    try:
+        os.remove(path)
+        print(f"Deleted {path}")
+    except Exception as e:
+        print(f"Error deleting {path}: {e}")

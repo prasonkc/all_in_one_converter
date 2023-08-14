@@ -13,8 +13,9 @@
             <input type="text" id="videoUrlInput" placeholder="Enter YouTube video URL">
             <button id="downloadBtn">Download</button>
         </div>
-        <div class="loader" style="display:none"></div>
-        <div class="format-section">
+        <div id="loader" style="display:none"></div>
+        <div id="processing"></div>
+        <div id="format-section">
             <label for="formatSelect">Select Format:</label>
             <select id="formatSelect">
                 <option value="mp4">MP4</option>
@@ -38,8 +39,6 @@
                 <option value="320k">320k</option>
             </select>
         </div>
-
-        <a href="./yt_bulk_download.html"><button class="bulk-download">Or Bulk Download Here</button></a>
     </div>
     <script src="./static/js/scr2pt.js">
     </script>
