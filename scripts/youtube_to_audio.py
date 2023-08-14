@@ -3,7 +3,7 @@ from pytube import YouTube
 from pydub import AudioSegment
 
 
-def download_audio(video_url, output_path, audio_format='mp3', bitrate='192k'):
+def download_ytAudio(video_url, output_path, audio_format='mp3', bitrate='192k'):
     try:
         yt = YouTube(video_url)
         audio_streams = yt.streams.filter(only_audio=True)

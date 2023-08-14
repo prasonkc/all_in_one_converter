@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function convertVideo() {
     const videoInput = document.getElementById("videoInput");
+
     const selectedFile = videoInput.files[0];
 
     const currentUrl = window.location.href;
@@ -146,6 +147,9 @@ document.addEventListener("DOMContentLoaded", function () {
         performRequest(selectedFile, selectedFormat, url);
       }
     }
+    else{
+      alert("FILE NOT SELECTED")
+    }
   }
 
   function downloadConvertedVideo() {
@@ -164,6 +168,13 @@ document.addEventListener("DOMContentLoaded", function () {
     downloadBtn.style.display = "none";
     attachment.style.display = "none";
     dropboxText.style.display = "block";
+
+    const videoInput = document.getElementById("videoInput");
+
+
+    if(videoInput){
+      videoInput.remove();
+    }
 
     document.body.appendChild(a);
     a.click();
